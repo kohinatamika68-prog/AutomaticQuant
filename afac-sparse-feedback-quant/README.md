@@ -1,10 +1,12 @@
-# Sparse Feedback Quant
+# 🧪 Sparse Feedback Quant
 
 一个面向自动化研究系统的轻量级 Python 工具包，用于组织稀疏反馈实验、描述量化因子候选、检查策略冗余，并生成可复核的研究笔记。
 
 A lightweight Python toolkit for automated research systems. It organizes sparse-feedback experiments, describes quantitative factor candidates, checks strategy redundancy, and generates reviewable research notes.
 
-## 项目概览 / Overview
+![Sparse Feedback Quant workflow](docs/assets/workflow.svg)
+
+## ✨ 项目概览 / Overview
 
 在真实研究环境中，实验反馈往往是延迟、嘈杂、部分可见或只有通过/失败信号的。Sparse Feedback Quant 将这些约束建模为明确的工程对象：实验状态、候选元数据、日收益相关性和研究记忆。
 
@@ -14,25 +16,44 @@ In real research environments, feedback is often delayed, noisy, partially visib
 
 The project is designed for agentic research loops, quantitative research pipelines, strategy de-duplication tools, experiment review systems, and open evaluation tasks.
 
-## 核心能力 / Core Capabilities
+## 🚀 核心能力 / Core Capabilities
 
-- **稀疏反馈实验 / Sparse-feedback experiments**  
+| 能力 / Capability | 作用 / What it does | 输出 / Output |
+| --- | --- | --- |
+| 🧭 稀疏反馈实验 / Sparse-feedback experiments | 组织 `proposed`、`running`、`partial`、`accepted`、`rejected`、`needs_review` 等状态 | 实验状态分布 / state distribution |
+| 🧬 因子候选元数据 / Factor candidate metadata | 用经济逻辑族、数据频率、预期换手、反馈来源和风险备注描述候选 | 可比较的候选记录 / comparable candidate records |
+| 🔗 日收益相关性检测 / Daily-return correlation checks | 将累计 PnL 转换为日收益变化，再计算相关性 | pairs、clusters、matrix |
+| 📝 研究记忆生成 / Research memory generation | 将实验记录整理为 Markdown 或 JSON 总结 | reviewable research note |
+
+### 🧭 稀疏反馈实验 / Sparse-feedback experiments
+
   以 `proposed`、`running`、`partial`、`accepted`、`rejected`、`needs_review` 等状态组织实验生命周期。  
   Track experiment lifecycles with states such as `proposed`, `running`, `partial`, `accepted`, `rejected`, and `needs_review`.
 
-- **因子候选元数据 / Factor candidate metadata**  
+### 🧬 因子候选元数据 / Factor candidate metadata
+
   用经济逻辑族、数据频率、预期换手、反馈来源和风险备注描述候选，便于跨实验比较和筛选。  
   Describe candidates by economic family, data cadence, expected turnover, feedback channel, and risk notes for comparison and filtering.
 
-- **日收益相关性检测 / Daily-return correlation checks**  
+### 🔗 日收益相关性检测 / Daily-return correlation checks
+
   将累计 PnL 转换为日收益变化，再计算相关性，帮助识别重复或高度相似的候选。  
   Convert cumulative PnL into daily deltas before computing correlation, helping identify duplicated or highly similar candidates.
 
-- **研究记忆生成 / Research memory generation**  
+### 📝 研究记忆生成 / Research memory generation
+
   将实验记录整理为 Markdown 笔记，沉淀失败类型、候选家族分布、平均分数和后续复核线索。  
   Turn experiment records into Markdown notes that summarize failure taxonomy, candidate-family distribution, average score, and review cues.
 
-## 安装与运行 / Installation And Usage
+## 🖼️ 图片讲解 / Visual Explanation
+
+![Correlation cluster explanation](docs/assets/correlation-cluster.svg)
+
+上图展示了相关性分析如何从累计 PnL 进入可执行决策：高相关候选会被归入同一个 cluster，工具给出代表候选和待复核候选。
+
+The diagram shows how cumulative PnL becomes an actionable review decision: highly correlated candidates are grouped into a cluster, with a representative candidate and review candidates.
+
+## ⚡ 安装与运行 / Installation And Usage
 
 ```bash
 python -m pip install -e .
@@ -47,7 +68,7 @@ python -m sparse_feedback_quant corr examples/synthetic_pnl.csv --format json
 
 These commands cover experiment-file validation, Markdown research summaries, JSON summaries, correlation matrices, and machine-readable correlation reports.
 
-示例输出 / Example output:
+### 📌 示例输出 / Example output
 
 ```text
 High-correlation pairs:
@@ -61,7 +82,7 @@ representative=quality_a; review=quality_variant; members=quality_a,quality_vari
 
 This result indicates that `quality_a` and `quality_variant` are highly similar at the daily-return level and should enter a de-duplication, review, or redesign flow.
 
-## Python API
+## 🧩 Python API
 
 ```python
 from sparse_feedback_quant.correlation import analyze_correlations, report_to_dict
@@ -86,7 +107,7 @@ report = analyze_correlations(
 print(report_to_dict(report))
 ```
 
-## 目录结构 / Repository Layout
+## 🗂️ 目录结构 / Repository Layout
 
 ```text
 sparse-feedback-quant/
@@ -95,6 +116,9 @@ sparse-feedback-quant/
   LICENSE
   PRIVACY.md
   docs/
+    assets/
+      workflow.svg
+      correlation-cluster.svg
     architecture.md
     model_lessons.md
     challenge_spec.md
@@ -115,7 +139,7 @@ sparse-feedback-quant/
     test_memory.py
 ```
 
-## 开放挑战 / Open Challenge
+## 🏁 开放挑战 / Open Challenge
 
 **稀疏反馈自动化与量化因子挖掘**  
 **Sparse Feedback Automation Meets Quantitative Factor Mining**
@@ -132,13 +156,13 @@ The challenge is to build an automated research loop that proposes candidates, r
 - 研究笔记质量 / research-note quality
 - 可复现实验流程 / reproducible workflow design
 
-## 文档 / Documentation
+## 📚 文档 / Documentation
 
 - [Architecture](docs/architecture.md)
 - [Model Lessons](docs/model_lessons.md)
 - [Challenge Spec](docs/challenge_spec.md)
 - [Privacy Notes](PRIVACY.md)
 
-## 许可证 / License
+## 📄 许可证 / License
 
 MIT. See [LICENSE](LICENSE).

@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="300" viewBox="0 0 980 300" role="img" aria-labelledby="title desc">
+  <title id="title">Sparse Feedback Quant workflow</title>
+  <desc id="desc">Candidate proposal, sparse feedback, validation, correlation analysis, research memory, and next iteration.</desc>
+  <defs>
+    <style>
+      .bg { fill: #f7fafc; }
+      .card { fill: #ffffff; stroke: #d6dee8; stroke-width: 1.5; rx: 10; }
+      .accent { fill: #1f7a8c; }
+      .accent2 { fill: #2f855a; }
+      .accent3 { fill: #b7791f; }
+      .text { fill: #1a202c; font-family: "Segoe UI", Arial, sans-serif; font-size: 16px; font-weight: 650; }
+      .sub { fill: #4a5568; font-family: "Segoe UI", Arial, sans-serif; font-size: 12px; }
+      .arrow { stroke: #718096; stroke-width: 2.2; fill: none; marker-end: url(#arrowhead); }
+      .pill { fill: #edf7f9; stroke: #b9dce2; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#718096"/>
+    </marker>
+  </defs>
+  <rect class="bg" x="0" y="0" width="980" height="300" rx="16"/>
+  <text class="text" x="40" y="38">Sparse Feedback Research Loop</text>
+  <text class="sub" x="40" y="58">From candidate ideas to reviewable lessons and the next experiment batch</text>
+
+  <g transform="translate(40 95)">
+    <rect class="card" x="0" y="0" width="130" height="92"/>
+    <circle class="accent" cx="28" cy="30" r="14"/>
+    <text class="text" x="50" y="33">Propose</text>
+    <text class="sub" x="18" y="62">candidate family</text>
+    <text class="sub" x="18" y="78">metadata</text>
+  </g>
+  <path class="arrow" d="M178 141 L228 141"/>
+
+  <g transform="translate(238 95)">
+    <rect class="card" x="0" y="0" width="130" height="92"/>
+    <circle class="accent3" cx="28" cy="30" r="14"/>
+    <text class="text" x="50" y="33">Feedback</text>
+    <text class="sub" x="18" y="62">partial / delayed</text>
+    <text class="sub" x="18" y="78">pass-fail signal</text>
+  </g>
+  <path class="arrow" d="M376 141 L426 141"/>
+
+  <g transform="translate(436 95)">
+    <rect class="card" x="0" y="0" width="130" height="92"/>
+    <circle class="accent2" cx="28" cy="30" r="14"/>
+    <text class="text" x="50" y="33">Validate</text>
+    <text class="sub" x="18" y="62">schema checks</text>
+    <text class="sub" x="18" y="78">state summary</text>
+  </g>
+  <path class="arrow" d="M574 141 L624 141"/>
+
+  <g transform="translate(634 95)">
+    <rect class="card" x="0" y="0" width="130" height="92"/>
+    <circle class="accent" cx="28" cy="30" r="14"/>
+    <text class="text" x="50" y="33">Correlate</text>
+    <text class="sub" x="18" y="62">daily deltas</text>
+    <text class="sub" x="18" y="78">clusters</text>
+  </g>
+  <path class="arrow" d="M772 141 L822 141"/>
+
+  <g transform="translate(832 95)">
+    <rect class="card" x="0" y="0" width="108" height="92"/>
+    <circle class="accent2" cx="28" cy="30" r="14"/>
+    <text class="text" x="50" y="33">Learn</text>
+    <text class="sub" x="18" y="62">research note</text>
+    <text class="sub" x="18" y="78">next batch</text>
+  </g>
+
+  <path class="arrow" d="M886 193 C850 250, 150 250, 104 194"/>
+  <rect class="pill" x="392" y="226" width="198" height="32" rx="16"/>
+  <text class="sub" x="421" y="247">review, keep, redesign</text>
+</svg>

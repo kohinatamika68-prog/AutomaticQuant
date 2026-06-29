@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="360" viewBox="0 0 980 360" role="img" aria-labelledby="title desc">
+  <title id="title">Correlation clustering explanation</title>
+  <desc id="desc">High-correlation candidates are grouped into a cluster with one representative and one review candidate.</desc>
+  <defs>
+    <style>
+      .bg { fill: #fbfbfd; }
+      .panel { fill: #ffffff; stroke: #d7deea; stroke-width: 1.5; rx: 12; }
+      .node { fill: #ffffff; stroke-width: 3; }
+      .keep { stroke: #2f855a; }
+      .review { stroke: #b7791f; }
+      .neutral { stroke: #718096; }
+      .link { stroke: #e53e3e; stroke-width: 4; opacity: .75; }
+      .weak { stroke: #a0aec0; stroke-width: 2; stroke-dasharray: 6 6; opacity: .8; }
+      .title { fill: #1a202c; font-family: "Segoe UI", Arial, sans-serif; font-size: 18px; font-weight: 700; }
+      .text { fill: #1a202c; font-family: "Segoe UI", Arial, sans-serif; font-size: 15px; font-weight: 650; }
+      .sub { fill: #4a5568; font-family: "Segoe UI", Arial, sans-serif; font-size: 12px; }
+      .mono { fill: #2d3748; font-family: Consolas, "SFMono-Regular", monospace; font-size: 13px; }
+      .badge { fill: #fff5f5; stroke: #feb2b2; }
+      .badge2 { fill: #f0fff4; stroke: #9ae6b4; }
+    </style>
+  </defs>
+  <rect class="bg" x="0" y="0" width="980" height="360" rx="16"/>
+
+  <text class="title" x="40" y="38">Daily-return correlation turns raw PnL into review decisions</text>
+  <text class="sub" x="40" y="60">A pair above the threshold becomes a cluster; the tool proposes one representative and review candidates.</text>
+
+  <rect class="panel" x="40" y="92" width="410" height="220"/>
+  <text class="text" x="66" y="124">Cluster view</text>
+  <line class="link" x1="180" y1="190" x2="300" y2="190"/>
+  <line class="weak" x1="300" y1="190" x2="365" y2="250"/>
+  <circle class="node keep" cx="180" cy="190" r="50"/>
+  <circle class="node review" cx="300" cy="190" r="50"/>
+  <circle class="node neutral" cx="365" cy="250" r="38"/>
+  <text class="text" x="145" y="188">quality_a</text>
+  <text class="sub" x="145" y="207">keep</text>
+  <text class="text" x="253" y="188">quality_variant</text>
+  <text class="sub" x="277" y="207">review</text>
+  <text class="text" x="338" y="253">other</text>
+  <rect class="badge" x="173" y="262" width="154" height="28" rx="14"/>
+  <text class="mono" x="193" y="281">corr = 0.9263</text>
+
+  <rect class="panel" x="500" y="92" width="430" height="220"/>
+  <text class="text" x="526" y="124">CLI output</text>
+  <text class="mono" x="526" y="158">High-correlation pairs:</text>
+  <text class="mono" x="526" y="182">quality_a,quality_variant,0.9263,critical</text>
+  <text class="mono" x="526" y="222">Clusters:</text>
+  <text class="mono" x="526" y="246">representative=quality_a</text>
+  <text class="mono" x="526" y="270">review=quality_variant</text>
+  <rect class="badge2" x="720" y="136" width="140" height="30" rx="15"/>
+  <text class="sub" x="744" y="156">actionable output</text>
+</svg>
