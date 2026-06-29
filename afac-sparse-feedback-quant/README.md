@@ -16,6 +16,17 @@ In real research environments, feedback is often delayed, noisy, partially visib
 
 The project is designed for agentic research loops, quantitative research pipelines, strategy de-duplication tools, experiment review systems, and open evaluation tasks.
 
+## 🎯 使用场景 / Use Cases
+
+| 场景 / Scenario | 可以做什么 / What users can do |
+| --- | --- |
+| 🧪 自动化实验管理 / Experiment management | 校验实验 JSON，统计状态、失败原因和平均分数。 Validate experiment JSON and summarize states, failures, and average score. |
+| 🔁 策略去重 / Strategy de-duplication | 从累计 PnL 计算日收益相关性，发现重复策略和高相关簇。 Detect redundant strategies and high-correlation clusters from cumulative PnL. |
+| 🎯 候选筛选 / Candidate selection | 结合 PnL 指标和相关性簇，选择代表候选并生成 review queue。 Select representative candidates with PnL metrics and correlation clusters. |
+| 🤖 Agent 研究记忆 / Agent research memory | 将每轮实验结果转成可复核的 Markdown 或 JSON 研究笔记。 Turn each experiment batch into reviewable Markdown or JSON research notes. |
+| 🧰 回测后处理 / Backtest post-processing | 接在 QuantConnect、Backtrader、Zipline、自研回测框架之后分析 PnL CSV。 Analyze PnL CSV after QuantConnect, Backtrader, Zipline, or custom backtests. |
+| 🏁 开放评测 / Open evaluation | 构建稀疏反馈下的候选选择、去重和复盘 benchmark。 Build benchmarks for candidate selection, de-duplication, and research review under sparse feedback. |
+
 ## 🚀 核心能力 / Core Capabilities
 
 | 能力 / Capability | 作用 / What it does | 输出 / Output |
