@@ -1,4 +1,4 @@
-from afac_sparse_quant.correlation import daily_returns, high_correlation_pairs
+from sparse_feedback_quant.correlation import analyze_correlations, daily_returns, high_correlation_pairs, report_to_dict
 
 
 def test_daily_returns_uses_deltas():
@@ -15,3 +15,17 @@ def test_high_correlation_pairs_detects_variants():
     assert pairs[0].left == "a"
     assert pairs[0].right == "b"
     assert pairs[0].correlation == 1.0
+    assert pairs[0].severity == "critical"
+
+
+def test_analyze_correlations_builds_clusters_and_representative():
+    series = {
+        "a": [0, 1, 3, 2, 5],
+        "b": [0, 2, 6, 4, 10],
+        "c": [0, -1, 0, -1, 0],
+    }
+    report = analyze_correlations(series, threshold=0.9, scores={"a": 0.7, "b": 1.2})
+    assert report.clusters[0].representative == "b"
+    assert report.clusters[0].review == ("a",)
+    data = report_to_dict(report)
+    assert data["clusters"][0]["members"] == ["a", "b"]

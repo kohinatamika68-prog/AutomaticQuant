@@ -36,18 +36,25 @@ The project is designed for agentic research loops, quantitative research pipeli
 
 ```bash
 python -m pip install -e .
+python -m sparse_feedback_quant validate examples/synthetic_experiments.json
 python -m sparse_feedback_quant report examples/synthetic_experiments.json
-python -m sparse_feedback_quant corr examples/synthetic_pnl.csv
+python -m sparse_feedback_quant report examples/synthetic_experiments.json --format json
+python -m sparse_feedback_quant corr examples/synthetic_pnl.csv --matrix
+python -m sparse_feedback_quant corr examples/synthetic_pnl.csv --format json
 ```
 
-第一个命令基于实验记录生成研究总结。第二个命令从累计 PnL 样例中识别高相关候选。
+这些命令覆盖实验文件校验、Markdown 研究总结、JSON 汇总、相关性矩阵和机器可读相关性报告。
 
-The first command generates a research summary from experiment records. The second command identifies high-correlation candidates from cumulative PnL samples.
+These commands cover experiment-file validation, Markdown research summaries, JSON summaries, correlation matrices, and machine-readable correlation reports.
 
 示例输出 / Example output:
 
 ```text
-quality_a,quality_variant,0.9263
+High-correlation pairs:
+quality_a,quality_variant,0.9263,critical
+
+Clusters:
+representative=quality_a; review=quality_variant; members=quality_a,quality_variant
 ```
 
 这个结果表示 `quality_a` 与 `quality_variant` 在日收益层面高度相似，适合进入去重、复核或重新设计流程。
@@ -57,7 +64,7 @@ This result indicates that `quality_a` and `quality_variant` are highly similar 
 ## Python API
 
 ```python
-from sparse_feedback_quant.correlation import high_correlation_pairs
+from sparse_feedback_quant.correlation import analyze_correlations, report_to_dict
 from sparse_feedback_quant.experiment import Experiment, SparseFeedbackState
 from sparse_feedback_quant.memory import build_research_note
 
@@ -69,14 +76,14 @@ experiments = [
 note = build_research_note(experiments)
 print(note)
 
-pairs = high_correlation_pairs(
+report = analyze_correlations(
     {
         "candidate_a": [0.0, 1.0, 1.6, 2.2],
         "candidate_b": [0.0, 0.9, 1.5, 2.0],
     },
     threshold=0.7,
 )
-print(pairs)
+print(report_to_dict(report))
 ```
 
 ## 目录结构 / Repository Layout

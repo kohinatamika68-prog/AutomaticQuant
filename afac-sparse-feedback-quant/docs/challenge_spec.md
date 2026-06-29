@@ -32,7 +32,7 @@ feedback, avoids redundant candidates, and writes reviewable research notes.
 
 ## Non-Goals
 
-- Replicating AFAC2026 high-score configurations.
+- Replicating high-score configurations from private competitions.
 - Publishing private alpha expressions.
 - Measuring real trading performance.
 - Encouraging platform-specific rule circumvention.

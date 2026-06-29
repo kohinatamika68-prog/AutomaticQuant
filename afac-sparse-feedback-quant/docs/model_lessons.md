@@ -1,4 +1,4 @@
-# Sanitized Model Lessons From AFAC2026
+# Model Lessons For Sparse Feedback Research
 
 These lessons are intentionally abstract. They capture model behavior patterns
 without revealing high-score configurations.

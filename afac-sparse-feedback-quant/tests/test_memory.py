@@ -1,5 +1,5 @@
-from afac_sparse_quant.experiment import Experiment, SparseFeedbackState
-from afac_sparse_quant.memory import build_research_note
+from sparse_feedback_quant.experiment import Experiment, SparseFeedbackState, validate_experiment_payload
+from sparse_feedback_quant.memory import build_research_note
 
 
 def test_research_note_is_sanitized_and_actionable():
@@ -12,4 +12,18 @@ def test_research_note_is_sanitized_and_actionable():
     assert "Sparse Feedback Research Note" in note
     assert "quality" in note
     assert "turnover" in note
-    assert "exact recipes" in note
+    assert "mechanism-level lessons" in note
+
+
+def test_validate_experiment_payload_catches_bad_rows():
+    errors = validate_experiment_payload(
+        {
+            "experiments": [
+                {"experiment_id": "x", "candidate_family": "quality", "state": "accepted"},
+                {"experiment_id": "x", "candidate_family": "", "state": "unknown", "score": "bad"},
+            ]
+        }
+    )
+    assert any("duplicates" in error for error in errors)
+    assert any("unsupported" in error for error in errors)
+    assert any("score" in error for error in errors)

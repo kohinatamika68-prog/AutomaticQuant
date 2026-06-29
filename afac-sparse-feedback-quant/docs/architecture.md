@@ -1,6 +1,6 @@
 # Architecture
 
-AFAC Sparse Feedback Quant is organized around a public research loop:
+Sparse Feedback Quant is organized around a public research loop:
 
 ```text
 candidate proposal
@@ -46,6 +46,12 @@ The correlation guard converts cumulative PnL into daily deltas before
 computing Pearson correlation. This avoids the common mistake of comparing
 cumulative curves, which can overstate similarity for unrelated profitable
 series.
+
+The report layer adds three outputs:
+
+- high-correlation pairs with severity labels;
+- connected clusters of redundant candidates;
+- one representative per cluster and review candidates for follow-up.
 
 ### Research Memory
 

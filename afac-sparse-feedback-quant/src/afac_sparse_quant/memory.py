@@ -33,5 +33,5 @@ def build_research_note(experiments: list[Experiment]) -> str:
         lines.append("- Partial or ambiguous feedback should trigger review instead of blind parameter search.")
 
     lines.append("- Correlation checks should use daily PnL deltas, not cumulative PnL levels.")
-    lines.append("- Publish the mechanism-level lesson only; keep exact recipes and tuning private.")
+    lines.append("- Promote mechanism-level lessons into the playbook after review.")
     return "\n".join(lines) + "\n"

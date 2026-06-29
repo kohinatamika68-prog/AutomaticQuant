@@ -1,7 +1,7 @@
 # Privacy And Publication Boundary
 
-This project is designed to publish AFAC2026-inspired engineering patterns
-without exposing private research assets.
+This project is designed to publish reusable sparse-feedback research patterns
+with clear boundaries around private research assets.
 
 ## Allowed In This Repository
 
@@ -15,7 +15,7 @@ without exposing private research assets.
 
 ## Not Allowed In This Repository
 
-- Exact AFAC2026 high-score model configurations.
+- Exact high-score model configurations.
 - Private model weights, prompts, seeds, hyperparameters, or feature recipes.
 - Real factor expressions from competitive or private platforms.
 - Account-linked IDs, submission logs, screenshots, API responses, or PnL.
