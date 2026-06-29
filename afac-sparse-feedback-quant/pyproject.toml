@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools>=68", "wheel>=0.40"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -9,11 +9,10 @@ description = "Sparse-feedback automation toolkit for sanitized quantitative fac
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
-authors = [{name = "AFAC Research"}]
+authors = [{name = "Sparse Feedback Quant Maintainers"}]
 dependencies = []
 
 [project.scripts]
-afac-sq = "afac_sparse_quant.cli:main"
 sfq = "sparse_feedback_quant.cli:main"
 
 [tool.setuptools.packages.find]
