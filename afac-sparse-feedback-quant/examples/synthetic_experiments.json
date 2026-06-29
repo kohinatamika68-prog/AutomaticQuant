@@ -1,0 +1,38 @@
+{
+  "experiments": [
+    {
+      "experiment_id": "synthetic-001",
+      "candidate_family": "quality",
+      "state": "accepted",
+      "score": 1.12,
+      "turnover_band": "low",
+      "diversity_band": "medium"
+    },
+    {
+      "experiment_id": "synthetic-002",
+      "candidate_family": "momentum",
+      "state": "rejected",
+      "score": 0.42,
+      "turnover_band": "high",
+      "diversity_band": "low",
+      "failure_reason": "turnover"
+    },
+    {
+      "experiment_id": "synthetic-003",
+      "candidate_family": "sentiment",
+      "state": "needs_review",
+      "score": 0.77,
+      "turnover_band": "medium",
+      "diversity_band": "unknown",
+      "failure_reason": "partial_feedback"
+    },
+    {
+      "experiment_id": "synthetic-004",
+      "candidate_family": "analyst_revision",
+      "state": "accepted",
+      "score": 1.04,
+      "turnover_band": "medium",
+      "diversity_band": "high"
+    }
+  ]
+}

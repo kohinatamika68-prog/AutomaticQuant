@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "afac-sparse-feedback-quant"
+version = "0.1.0"
+description = "Sparse-feedback automation toolkit for sanitized quantitative factor research loops."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [{name = "AFAC Research"}]
+dependencies = []
+
+[project.scripts]
+afac-sq = "afac_sparse_quant.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
