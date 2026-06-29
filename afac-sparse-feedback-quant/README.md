@@ -1,42 +1,88 @@
-# AFAC Sparse Feedback Quant
+# Sparse Feedback Quant
 
-> 中文：一个将“稀疏反馈下的自动化实验挑战”与“量化金融因子挖掘”结合起来的开源研究脚手架。  
-> English: An open-source research scaffold that combines sparse-feedback automation challenges with quantitative factor mining.
+一个面向自动化研究系统的轻量级 Python 工具包，用于组织稀疏反馈实验、描述量化因子候选、检查策略冗余，并生成可复核的研究笔记。
 
-本项目借鉴 AFAC2026 的研究流程经验，但只发布合成数据、通用因子族、抽象实验状态和经过脱敏的模型经验。  
-This project is inspired by the AFAC2026 research workflow, but it only ships synthetic data, generic factor families, abstract experiment states, and sanitized model lessons.
+A lightweight Python toolkit for automated research systems. It organizes sparse-feedback experiments, describes quantitative factor candidates, checks strategy redundancy, and generates reviewable research notes.
 
-本仓库不包含私有 alpha 表达式、平台账号数据、真实 PnL、排行榜调参、模型 checkpoint、私有 prompt 或高分配置。  
-This repository does not contain private alpha expressions, platform account data, real PnL, leaderboard tuning, model checkpoints, private prompts, or high-score configurations.
+## 项目概览 / Overview
 
-## 项目目标 / Project Goal
+在真实研究环境中，实验反馈往往是延迟、嘈杂、部分可见或只有通过/失败信号的。Sparse Feedback Quant 将这些约束建模为明确的工程对象：实验状态、候选元数据、日收益相关性和研究记忆。
 
-中文：AFAC Sparse Feedback Quant 的目标不是公开某个高分方案，而是公开一套可复用的研究系统范式：在反馈稀疏、延迟、不完整的环境中，让 agent 能够提出候选、记录实验、识别失败、检查冗余，并沉淀可审查的研究记忆。  
-English: AFAC Sparse Feedback Quant does not publish a high-score recipe. It publishes a reusable research-system pattern: in environments with sparse, delayed, or incomplete feedback, an agent can propose candidates, track experiments, diagnose failures, detect redundancy, and write reviewable research memory.
+In real research environments, feedback is often delayed, noisy, partially visible, or reduced to pass/fail signals. Sparse Feedback Quant models these constraints as explicit engineering objects: experiment state, candidate metadata, daily-return correlation, and research memory.
 
-## 核心模块 / Core Modules
+该项目适合用于构建 agentic research loop、量化研究流水线、策略候选去重工具、实验复盘系统和开放评测任务。
 
-- **稀疏反馈实验循环 / Sparse feedback loop**  
-  中文：跟踪反馈延迟、噪声较大、只有部分结果或只有二元通过/失败信号的实验。  
-  English: Track experiments when feedback is delayed, noisy, partial, or binary.
+The project is designed for agentic research loops, quantitative research pipelines, strategy de-duplication tools, experiment review systems, and open evaluation tasks.
 
-- **因子候选抽象 / Factor candidate abstraction**  
-  中文：用经济逻辑族、数据频率、预期换手和风险备注描述候选，而不是暴露私有公式。  
-  English: Describe a candidate by economic family, data cadence, expected turnover, and risk notes instead of exposing private formulas.
+## 核心能力 / Core Capabilities
 
-- **相关性守卫 / Correlation guard**  
-  中文：用日收益变化计算相关性，避免直接比较累计 PnL 曲线造成误判。  
-  English: Compare strategies by daily-return deltas rather than cumulative PnL levels.
+- **稀疏反馈实验 / Sparse-feedback experiments**  
+  以 `proposed`、`running`、`partial`、`accepted`、`rejected`、`needs_review` 等状态组织实验生命周期。  
+  Track experiment lifecycles with states such as `proposed`, `running`, `partial`, `accepted`, `rejected`, and `needs_review`.
 
-- **研究记忆生成 / Research memory**  
-  中文：把实验结果转成脱敏 Markdown 笔记，先人工审查，再决定是否加入公开 playbook。  
-  English: Convert experiment outcomes into sanitized Markdown notes for human review before they enter a public playbook.
+- **因子候选元数据 / Factor candidate metadata**  
+  用经济逻辑族、数据频率、预期换手、反馈来源和风险备注描述候选，便于跨实验比较和筛选。  
+  Describe candidates by economic family, data cadence, expected turnover, feedback channel, and risk notes for comparison and filtering.
+
+- **日收益相关性检测 / Daily-return correlation checks**  
+  将累计 PnL 转换为日收益变化，再计算相关性，帮助识别重复或高度相似的候选。  
+  Convert cumulative PnL into daily deltas before computing correlation, helping identify duplicated or highly similar candidates.
+
+- **研究记忆生成 / Research memory generation**  
+  将实验记录整理为 Markdown 笔记，沉淀失败类型、候选家族分布、平均分数和后续复核线索。  
+  Turn experiment records into Markdown notes that summarize failure taxonomy, candidate-family distribution, average score, and review cues.
+
+## 安装与运行 / Installation And Usage
+
+```bash
+python -m pip install -e .
+python -m sparse_feedback_quant report examples/synthetic_experiments.json
+python -m sparse_feedback_quant corr examples/synthetic_pnl.csv
+```
+
+第一个命令基于实验记录生成研究总结。第二个命令从累计 PnL 样例中识别高相关候选。
+
+The first command generates a research summary from experiment records. The second command identifies high-correlation candidates from cumulative PnL samples.
+
+示例输出 / Example output:
+
+```text
+quality_a,quality_variant,0.9263
+```
+
+这个结果表示 `quality_a` 与 `quality_variant` 在日收益层面高度相似，适合进入去重、复核或重新设计流程。
+
+This result indicates that `quality_a` and `quality_variant` are highly similar at the daily-return level and should enter a de-duplication, review, or redesign flow.
+
+## Python API
+
+```python
+from sparse_feedback_quant.correlation import high_correlation_pairs
+from sparse_feedback_quant.experiment import Experiment, SparseFeedbackState
+from sparse_feedback_quant.memory import build_research_note
+
+experiments = [
+    Experiment("exp-001", "quality", SparseFeedbackState.ACCEPTED, score=1.12),
+    Experiment("exp-002", "momentum", SparseFeedbackState.REJECTED, score=0.42, failure_reason="turnover"),
+]
+
+note = build_research_note(experiments)
+print(note)
+
+pairs = high_correlation_pairs(
+    {
+        "candidate_a": [0.0, 1.0, 1.6, 2.2],
+        "candidate_b": [0.0, 0.9, 1.5, 2.0],
+    },
+    threshold=0.7,
+)
+print(pairs)
+```
 
 ## 目录结构 / Repository Layout
 
 ```text
-afac-sparse-feedback-quant/
-  .gitignore
+sparse-feedback-quant/
   pyproject.toml
   README.md
   LICENSE
@@ -49,7 +95,7 @@ afac-sparse-feedback-quant/
     synthetic_experiments.json
     synthetic_pnl.csv
   src/
-    afac_sparse_quant/
+    sparse_feedback_quant/
       __init__.py
       __main__.py
       cli.py
@@ -62,84 +108,29 @@ afac-sparse-feedback-quant/
     test_memory.py
 ```
 
-## 快速开始 / Quick Start
-
-中文：进入本目录后运行：  
-English: From this directory, run:
-
-```bash
-python -m pip install -e .
-python -m afac_sparse_quant report examples/synthetic_experiments.json
-python -m afac_sparse_quant corr examples/synthetic_pnl.csv
-```
-
-中文：第一个命令会基于合成实验记录生成脱敏研究总结；第二个命令会基于合成累计 PnL 计算日收益相关性。  
-English: The first command generates a sanitized research summary from synthetic experiment records. The second computes daily-return correlations from synthetic cumulative PnL series.
-
-示例输出 / Example output:
-
-```text
-quality_a,quality_variant,0.9263
-```
-
-中文：这表示两个候选在日收益层面高度相关，应该进入去重或人工复核流程。  
-English: This means the two candidates are highly correlated at the daily-return level and should enter a de-duplication or review process.
-
-## 设计边界 / Design Boundary
-
-可以公开 / Public:
-
-- 通用实验 schema / generic experiment schemas
-- 合成样例 / synthetic examples
-- 失败类型 taxonomy / failure taxonomies
-- 相关性与研究记忆工具 / correlation and memory tooling
-- 抽象模型经验 / abstract model lessons
-
-不能公开 / Private:
-
-- AFAC2026 精确调参 / exact AFAC2026 tuning
-- 模型结构和超参数配方 / model architecture and hyperparameter recipes
-- 高分运行使用的 prompt / prompts used for high-scoring runs
-- 私有因子表达式 / private factor expressions
-- 真实 PnL、alpha ID、账号状态或提交结果 / real PnL, alpha IDs, account state, or submission outcomes
-
-更多边界说明见 [PRIVACY.md](PRIVACY.md)。  
-See [PRIVACY.md](PRIVACY.md) for the full publication boundary.
-
-## 为什么关注稀疏反馈 / Why Sparse Feedback Matters
-
-中文：很多自动化研究系统拿到的反馈并不是完整梯度或清晰标签，而是延迟、模糊、部分可见的信号。  
-English: Many automated research systems do not receive full gradients or clean labels. They receive delayed, ambiguous, partially visible signals.
-
-典型场景 / Common cases:
-
-- 批量结果数小时后才返回 / a batch result arrives hours later;
-- 通过/失败检查隐藏了真实失败原因 / pass-fail checks hide the real failure reason;
-- 单个候选表现不错，但和已有信号高度重复 / a candidate looks strong but duplicates an existing signal;
-- 模型提升了可见指标，却牺牲了组合多样性 / a model improves a visible metric while degrading diversity;
-- 局部最优步骤不一定提升组合层面的质量 / the best local step is not necessarily best at the portfolio level.
-
-中文：本项目把这些约束当成系统设计的一部分，而不是事后补丁。  
-English: This project treats those constraints as first-class system design inputs, not after-the-fact patches.
-
 ## 开放挑战 / Open Challenge
 
-中文：本项目也可以作为一个开放挑战的基础：  
-English: This project can also serve as the base for an open challenge:
-
-**稀疏反馈下的自动化实验挑战与量化金融因子挖掘融合**  
+**稀疏反馈自动化与量化因子挖掘**  
 **Sparse Feedback Automation Meets Quantitative Factor Mining**
 
-挑战目标 / Challenge objective:
+挑战任务是构建一个自动化研究循环：提出候选、接收稀疏反馈、更新实验状态、检查候选多样性，并输出可复核的研究笔记。
 
-- 提出脱敏因子候选 / propose sanitized factor candidates;
-- 处理延迟或部分反馈 / handle delayed or partial feedback;
-- 识别高相关、低多样性的候选 / detect highly correlated or low-diversity candidates;
-- 生成可审查的研究笔记 / generate reviewable research notes;
-- 保持私有方案不可泄露 / keep private recipes unpublished.
+The challenge is to build an automated research loop that proposes candidates, receives sparse feedback, updates experiment state, checks candidate diversity, and emits reviewable research notes.
 
-详细规格见 [docs/challenge_spec.md](docs/challenge_spec.md)。  
-See [docs/challenge_spec.md](docs/challenge_spec.md) for details.
+评测维度 / Evaluation dimensions:
+
+- 反馈效率 / feedback efficiency
+- 候选多样性 / candidate diversity
+- 部分反馈处理能力 / partial-feedback handling
+- 研究笔记质量 / research-note quality
+- 可复现实验流程 / reproducible workflow design
+
+## 文档 / Documentation
+
+- [Architecture](docs/architecture.md)
+- [Model Lessons](docs/model_lessons.md)
+- [Challenge Spec](docs/challenge_spec.md)
+- [Privacy Notes](PRIVACY.md)
 
 ## 许可证 / License
 
