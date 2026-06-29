@@ -53,6 +53,22 @@ The report layer adds three outputs:
 - connected clusters of redundant candidates;
 - one representative per cluster and review candidates for follow-up.
 
+### PnL Metrics And Selection
+
+`metrics.py` computes lightweight PnL diagnostics from cumulative series:
+
+- total PnL;
+- mean daily PnL;
+- volatility;
+- Sharpe-like score;
+- maximum drawdown;
+- hit rate.
+
+`selection.py` combines those metrics with correlation clusters. A high-correlation
+cluster keeps one representative candidate and sends the remaining candidates to
+the review queue. Independent candidates remain eligible unless a `--top` cutoff
+is applied.
+
 ### Research Memory
 
 `build_research_note` turns experiment records into a Markdown summary. The

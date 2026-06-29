@@ -8,6 +8,8 @@ from pathlib import Path
 from .correlation import analyze_correlations, report_to_dict
 from .experiment import Experiment, summarize_experiments, validate_experiment_payload
 from .memory import build_research_note
+from .metrics import compute_metrics_table, metrics_to_dict
+from .selection import select_candidates, selection_to_dict
 
 
 def _load_experiments(path: Path) -> list[Experiment]:
@@ -49,6 +51,12 @@ def main(argv: list[str] | None = None) -> int:
     validate_cmd = sub.add_parser("validate", help="validate experiment JSON input")
     validate_cmd.add_argument("experiments", type=Path)
 
+    score_cmd = sub.add_parser("score", help="score PnL series and select non-redundant candidates")
+    score_cmd.add_argument("pnl_csv", type=Path)
+    score_cmd.add_argument("--threshold", type=float, default=0.70)
+    score_cmd.add_argument("--top", type=int, default=None)
+    score_cmd.add_argument("--format", choices=("text", "json"), default="text")
+
     args = parser.parse_args(argv)
 
     if args.command == "report":
@@ -74,6 +82,15 @@ def main(argv: list[str] | None = None) -> int:
                 print(f"ERROR {error}")
             return 1
         print("OK")
+        return 0
+
+    if args.command == "score":
+        series = _load_pnl_csv(args.pnl_csv)
+        report = select_candidates(series, threshold=args.threshold, top=args.top)
+        if args.format == "json":
+            print(json.dumps(selection_to_dict(report), indent=2, ensure_ascii=False))
+        else:
+            _print_selection_report(report)
         return 0
 
     return 2
@@ -102,6 +119,27 @@ def _print_correlation_report(report, include_matrix: bool = False) -> None:
         for name in names:
             values = [f"{report.matrix[name][other]:.4f}" for other in names]
             print(",".join([name, *values]))
+
+
+def _print_selection_report(report) -> None:
+    print("Selected candidates:")
+    for name in report.selected:
+        row = report.metrics[name]
+        print(
+            f"{name},score={_display_score(row):.4f},"
+            f"total_pnl={row.total_pnl:.4f},sharpe_like={row.sharpe_like:.4f},"
+            f"max_drawdown={row.max_drawdown:.4f},hit_rate={row.hit_rate:.2f}"
+        )
+
+    if report.review:
+        print("")
+        print("Review candidates:")
+        for name in report.review:
+            print(f"{name},{report.reasons.get(name, 'review')}")
+
+
+def _display_score(metrics) -> float:
+    return metrics_to_dict(metrics)["sharpe_like"]
 
 
 if __name__ == "__main__":

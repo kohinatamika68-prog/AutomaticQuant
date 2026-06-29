@@ -1,51 +1,97 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="980" height="360" viewBox="0 0 980 360" role="img" aria-labelledby="title desc">
-  <title id="title">Correlation clustering explanation</title>
-  <desc id="desc">High-correlation candidates are grouped into a cluster with one representative and one review candidate.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-labelledby="title desc">
+  <title id="title">Correlation cluster dashboard</title>
+  <desc id="desc">A dashboard explaining candidate selection with a heatmap, cluster graph, and score cards.</desc>
   <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#07111f"/>
+      <stop offset="1" stop-color="#172033"/>
+    </linearGradient>
+    <linearGradient id="panel2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#16243b"/>
+      <stop offset="1" stop-color="#0d1422"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
     <style>
-      .bg { fill: #fbfbfd; }
-      .panel { fill: #ffffff; stroke: #d7deea; stroke-width: 1.5; rx: 12; }
-      .node { fill: #ffffff; stroke-width: 3; }
-      .keep { stroke: #2f855a; }
-      .review { stroke: #b7791f; }
-      .neutral { stroke: #718096; }
-      .link { stroke: #e53e3e; stroke-width: 4; opacity: .75; }
-      .weak { stroke: #a0aec0; stroke-width: 2; stroke-dasharray: 6 6; opacity: .8; }
-      .title { fill: #1a202c; font-family: "Segoe UI", Arial, sans-serif; font-size: 18px; font-weight: 700; }
-      .text { fill: #1a202c; font-family: "Segoe UI", Arial, sans-serif; font-size: 15px; font-weight: 650; }
-      .sub { fill: #4a5568; font-family: "Segoe UI", Arial, sans-serif; font-size: 12px; }
-      .mono { fill: #2d3748; font-family: Consolas, "SFMono-Regular", monospace; font-size: 13px; }
-      .badge { fill: #fff5f5; stroke: #feb2b2; }
-      .badge2 { fill: #f0fff4; stroke: #9ae6b4; }
+      .panel { fill: url(#panel2); stroke: #304866; stroke-width: 1.2; rx: 22; }
+      .title { fill: #f8fafc; font-family: "Segoe UI", Arial, sans-serif; font-size: 28px; font-weight: 800; }
+      .label { fill: #f8fafc; font-family: "Segoe UI", Arial, sans-serif; font-size: 17px; font-weight: 760; }
+      .sub { fill: #a8c3d9; font-family: "Segoe UI", Arial, sans-serif; font-size: 12px; }
+      .mono { fill: #dbeafe; font-family: Consolas, "SFMono-Regular", monospace; font-size: 12px; }
+      .cell { stroke: #0f172a; stroke-width: 2; rx: 8; }
+      .node { stroke-width: 3; filter: url(#glow); }
+      .line { stroke: #fb7185; stroke-width: 5; opacity: .85; }
+      .weak { stroke: #64748b; stroke-width: 2; stroke-dasharray: 6 7; }
+      .chip { fill: #0f2033; stroke: #2d4965; }
+      .green { fill: #34d399; }
+      .amber { fill: #f59e0b; }
+      .red { fill: #fb7185; }
+      .blue { fill: #60a5fa; }
     </style>
   </defs>
-  <rect class="bg" x="0" y="0" width="980" height="360" rx="16"/>
+  <rect width="1200" height="560" rx="30" fill="url(#bg2)"/>
+  <text class="title" x="58" y="58">Correlation-aware candidate selection</text>
+  <text class="sub" x="58" y="82">Daily-return similarity, PnL metrics, and cluster representatives in one decision surface</text>
 
-  <text class="title" x="40" y="38">Daily-return correlation turns raw PnL into review decisions</text>
-  <text class="sub" x="40" y="60">A pair above the threshold becomes a cluster; the tool proposes one representative and review candidates.</text>
+  <g transform="translate(58 120)">
+    <rect class="panel" x="0" y="0" width="340" height="338"/>
+    <text class="label" x="26" y="38">Correlation heatmap</text>
+    <text class="sub" x="26" y="58">critical pair detection</text>
+    <g transform="translate(34 88)">
+      <rect class="cell red" x="0" y="0" width="58" height="58"/>
+      <rect class="cell red" x="62" y="0" width="58" height="58" opacity=".85"/>
+      <rect class="cell blue" x="124" y="0" width="58" height="58" opacity=".28"/>
+      <rect class="cell blue" x="186" y="0" width="58" height="58" opacity=".2"/>
+      <rect class="cell red" x="0" y="62" width="58" height="58" opacity=".85"/>
+      <rect class="cell red" x="62" y="62" width="58" height="58"/>
+      <rect class="cell blue" x="124" y="62" width="58" height="58" opacity=".35"/>
+      <rect class="cell blue" x="186" y="62" width="58" height="58" opacity=".22"/>
+      <rect class="cell blue" x="0" y="124" width="58" height="58" opacity=".28"/>
+      <rect class="cell blue" x="62" y="124" width="58" height="58" opacity=".35"/>
+      <rect class="cell red" x="124" y="124" width="58" height="58"/>
+      <rect class="cell amber" x="186" y="124" width="58" height="58" opacity=".45"/>
+      <rect class="cell blue" x="0" y="186" width="58" height="58" opacity=".2"/>
+      <rect class="cell blue" x="62" y="186" width="58" height="58" opacity=".22"/>
+      <rect class="cell amber" x="124" y="186" width="58" height="58" opacity=".45"/>
+      <rect class="cell red" x="186" y="186" width="58" height="58"/>
+    </g>
+    <rect class="chip" x="34" y="300" width="194" height="28" rx="14"/>
+    <text class="mono" x="52" y="319">quality pair = 0.9263</text>
+  </g>
 
-  <rect class="panel" x="40" y="92" width="410" height="220"/>
-  <text class="text" x="66" y="124">Cluster view</text>
-  <line class="link" x1="180" y1="190" x2="300" y2="190"/>
-  <line class="weak" x1="300" y1="190" x2="365" y2="250"/>
-  <circle class="node keep" cx="180" cy="190" r="50"/>
-  <circle class="node review" cx="300" cy="190" r="50"/>
-  <circle class="node neutral" cx="365" cy="250" r="38"/>
-  <text class="text" x="145" y="188">quality_a</text>
-  <text class="sub" x="145" y="207">keep</text>
-  <text class="text" x="253" y="188">quality_variant</text>
-  <text class="sub" x="277" y="207">review</text>
-  <text class="text" x="338" y="253">other</text>
-  <rect class="badge" x="173" y="262" width="154" height="28" rx="14"/>
-  <text class="mono" x="193" y="281">corr = 0.9263</text>
+  <g transform="translate(430 120)">
+    <rect class="panel" x="0" y="0" width="330" height="338"/>
+    <text class="label" x="26" y="38">Cluster graph</text>
+    <text class="sub" x="26" y="58">representative + review queue</text>
+    <line class="line" x1="112" y1="164" x2="212" y2="164"/>
+    <line class="weak" x1="212" y1="164" x2="250" y2="238"/>
+    <circle class="node green" cx="112" cy="164" r="52"/>
+    <circle class="node amber" cx="212" cy="164" r="52"/>
+    <circle class="node blue" cx="250" cy="238" r="34"/>
+    <text class="mono" x="78" y="160">quality_a</text>
+    <text class="sub" x="86" y="180">selected</text>
+    <text class="mono" x="168" y="160">variant</text>
+    <text class="sub" x="180" y="180">review</text>
+    <text class="mono" x="232" y="242">other</text>
+    <rect class="chip" x="58" y="290" width="210" height="28" rx="14"/>
+    <text class="mono" x="82" y="309">severity = critical</text>
+  </g>
 
-  <rect class="panel" x="500" y="92" width="430" height="220"/>
-  <text class="text" x="526" y="124">CLI output</text>
-  <text class="mono" x="526" y="158">High-correlation pairs:</text>
-  <text class="mono" x="526" y="182">quality_a,quality_variant,0.9263,critical</text>
-  <text class="mono" x="526" y="222">Clusters:</text>
-  <text class="mono" x="526" y="246">representative=quality_a</text>
-  <text class="mono" x="526" y="270">review=quality_variant</text>
-  <rect class="badge2" x="720" y="136" width="140" height="30" rx="15"/>
-  <text class="sub" x="744" y="156">actionable output</text>
+  <g transform="translate(792 120)">
+    <rect class="panel" x="0" y="0" width="350" height="338"/>
+    <text class="label" x="26" y="38">Selection report</text>
+    <text class="sub" x="26" y="58">metrics explain the decision</text>
+    <text class="mono" x="30" y="100">Selected candidates:</text>
+    <text class="mono" x="30" y="130">quality_a</text>
+    <rect x="150" y="112" width="145" height="22" rx="11" fill="#123824"/>
+    <text class="sub" x="170" y="128">representative</text>
+    <text class="mono" x="30" y="170">total_pnl      7.0000</text>
+    <text class="mono" x="30" y="198">sharpe_like    2.1049</text>
+    <text class="mono" x="30" y="226">max_drawdown   0.0000</text>
+    <text class="mono" x="30" y="254">hit_rate       1.00</text>
+    <rect class="chip" x="30" y="290" width="250" height="28" rx="14"/>
+    <text class="mono" x="50" y="309">review = quality_variant</text>
+  </g>
 </svg>

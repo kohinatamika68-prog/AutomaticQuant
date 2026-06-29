@@ -23,6 +23,8 @@ The project is designed for agentic research loops, quantitative research pipeli
 | 🧭 稀疏反馈实验 / Sparse-feedback experiments | 组织 `proposed`、`running`、`partial`、`accepted`、`rejected`、`needs_review` 等状态 | 实验状态分布 / state distribution |
 | 🧬 因子候选元数据 / Factor candidate metadata | 用经济逻辑族、数据频率、预期换手、反馈来源和风险备注描述候选 | 可比较的候选记录 / comparable candidate records |
 | 🔗 日收益相关性检测 / Daily-return correlation checks | 将累计 PnL 转换为日收益变化，再计算相关性 | pairs、clusters、matrix |
+| 📈 PnL 指标评分 / PnL scoring | 计算 total PnL、Sharpe-like、max drawdown、hit rate | candidate metrics |
+| 🎯 候选选择 / Candidate selection | 在高相关簇中保留代表候选，并生成 review queue | selected、review、reasons |
 | 📝 研究记忆生成 / Research memory generation | 将实验记录整理为 Markdown 或 JSON 总结 | reviewable research note |
 
 ### 🧭 稀疏反馈实验 / Sparse-feedback experiments
@@ -39,6 +41,11 @@ The project is designed for agentic research loops, quantitative research pipeli
 
   将累计 PnL 转换为日收益变化，再计算相关性，帮助识别重复或高度相似的候选。  
   Convert cumulative PnL into daily deltas before computing correlation, helping identify duplicated or highly similar candidates.
+
+### 📈 PnL 指标评分与候选选择 / PnL scoring and candidate selection
+
+  从累计 PnL 中计算收益、波动、Sharpe-like、最大回撤、胜率，并结合相关性簇选择代表候选。  
+  Compute return, volatility, Sharpe-like score, maximum drawdown, and hit rate, then combine them with correlation clusters to select representative candidates.
 
 ### 📝 研究记忆生成 / Research memory generation
 
@@ -62,11 +69,13 @@ python -m sparse_feedback_quant report examples/synthetic_experiments.json
 python -m sparse_feedback_quant report examples/synthetic_experiments.json --format json
 python -m sparse_feedback_quant corr examples/synthetic_pnl.csv --matrix
 python -m sparse_feedback_quant corr examples/synthetic_pnl.csv --format json
+python -m sparse_feedback_quant score examples/synthetic_pnl.csv --top 3
+python -m sparse_feedback_quant score examples/synthetic_pnl.csv --format json
 ```
 
-这些命令覆盖实验文件校验、Markdown 研究总结、JSON 汇总、相关性矩阵和机器可读相关性报告。
+这些命令覆盖实验文件校验、Markdown 研究总结、JSON 汇总、相关性矩阵、候选评分和机器可读报告。
 
-These commands cover experiment-file validation, Markdown research summaries, JSON summaries, correlation matrices, and machine-readable correlation reports.
+These commands cover experiment-file validation, Markdown research summaries, JSON summaries, correlation matrices, candidate scoring, and machine-readable reports.
 
 ### 📌 示例输出 / Example output
 
@@ -76,6 +85,14 @@ quality_a,quality_variant,0.9263,critical
 
 Clusters:
 representative=quality_a; review=quality_variant; members=quality_a,quality_variant
+```
+
+```text
+Selected candidates:
+quality_variant,score=4.8821,total_pnl=6.8000,sharpe_like=4.8821,max_drawdown=0.0000,hit_rate=1.00
+
+Review candidates:
+quality_a,highly correlated with representative quality_variant
 ```
 
 这个结果表示 `quality_a` 与 `quality_variant` 在日收益层面高度相似，适合进入去重、复核或重新设计流程。
@@ -88,6 +105,7 @@ This result indicates that `quality_a` and `quality_variant` are highly similar 
 from sparse_feedback_quant.correlation import analyze_correlations, report_to_dict
 from sparse_feedback_quant.experiment import Experiment, SparseFeedbackState
 from sparse_feedback_quant.memory import build_research_note
+from sparse_feedback_quant.selection import select_candidates, selection_to_dict
 
 experiments = [
     Experiment("exp-001", "quality", SparseFeedbackState.ACCEPTED, score=1.12),
@@ -105,6 +123,15 @@ report = analyze_correlations(
     threshold=0.7,
 )
 print(report_to_dict(report))
+
+selection = select_candidates(
+    {
+        "candidate_a": [0.0, 1.0, 1.6, 2.2],
+        "candidate_b": [0.0, 0.9, 1.5, 2.0],
+    },
+    threshold=0.7,
+)
+print(selection_to_dict(selection))
 ```
 
 ## 🗂️ 目录结构 / Repository Layout
@@ -133,6 +160,8 @@ sparse-feedback-quant/
       correlation.py
       experiment.py
       factor.py
+      metrics.py
+      selection.py
       memory.py
   tests/
     test_correlation.py
